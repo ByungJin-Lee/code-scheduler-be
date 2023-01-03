@@ -3,7 +3,7 @@ import path from "path";
 import { ENV_DEV_NAME, ENV_PRODUCTION_NAME } from "../constants/file";
 import { AppConfiguration } from "../types/environment";
 
-const ROOT_DIR = path.join(__dirname, "../", "../");
+const ROOT_DIR = process.cwd();
 
 switch (process.env.NODE_ENV) {
   case "production":
