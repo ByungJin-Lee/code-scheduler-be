@@ -6,7 +6,7 @@ declare global {
       userId: string | null;
     }
     export interface Response {
-      retJson(data: any): void;
+      retJson(service: number, ok: boolean, data?: any): void;
     }
   }
 }
