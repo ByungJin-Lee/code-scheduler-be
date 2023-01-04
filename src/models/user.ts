@@ -22,13 +22,19 @@ UserModel.init({
 	}
   },
   {
-	sequelize: db.sequelize,
-	modelName: "member",
-	// 자동으로 createdAt, editedAt 필드를 생성하지 않음
-	timestamps: false,
-	// 자동으로 필드명 끝에 's'를 붙이지 않음
-	freezeTableName: true
+		sequelize: db.sequelize,
+		modelName: "member",
+		// 자동으로 createdAt, editedAt 필드를 생성하지 않음
+		timestamps: false,
+		// 자동으로 필드명 끝에 's'를 붙이지 않음
+		freezeTableName: true
   }
 )
 
-export default UserModel;
+export interface UserDTO {
+	email: String,
+	password: String,
+	createdAt: Date
+}
+
+export default {UserModel};

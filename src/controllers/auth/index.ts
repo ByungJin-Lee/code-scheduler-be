@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+import env from '../../configs/env';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.post('/', async (req, res) => {
 	
 		const token = jwt.sign(
 		  {email: user.email},
-		  process.env.JWT_SECRET_KEY as jwt.Secret,
+		  env.JWT_SECRET_KEY as jwt.Secret,
 		  {expiresIn: '10m'}
 		);
 	

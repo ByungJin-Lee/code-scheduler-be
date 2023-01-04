@@ -3,18 +3,19 @@ import passportLocal from "passport-local";
 import passportJwt, { ExtractJwt } from "passport-jwt";
 import UserService from "../services/UserService";
 import { Request } from "express";
+import env from "../configs/env";
 
 passport.use('local', new passportLocal.Strategy({
-	usernameField: 'id',
+	usernameField: 'email',
 	passwordField: 'password',
 	passReqToCallback: true
 },
-async (req: Request, id: string, password: string, done) => {
+async (req: Request, email: string, password: string, done) => {
 	try {
-		let user = await UserService.isValid(id, password);
+		let user = await UserService.isValid(email, password);
 		if (!user) {
 			return done(null, false, {
-				message: "Invalid ID or Password!"
+				message: "Invalid Email or Password!"
 			});
 		}
 		return done(null, user);
@@ -28,7 +29,7 @@ async (req: Request, id: string, password: string, done) => {
 passport.use('jwt', new passportJwt.Strategy(
 	{
 	  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-	  secretOrKey: process.env.JWT_SECRET_KEY
+	  secretOrKey: env.JWT_SECRET_KEY
 	},
 	async (jwtPayload, done) => {
 	  try {
@@ -45,5 +46,18 @@ passport.use('jwt', new passportJwt.Strategy(
 	  }
 	}
 ))
+
+passport.serializeUser((id, done) => {
+  return done(null, id);
+})
+
+passport.deserializeUser(async (id, done) => {
+  let user = await UserService.getInfo(id as string);
+
+  if (user)
+    done(null, user);
+  else
+    done(null, false);
+})
 
 export default passport;
