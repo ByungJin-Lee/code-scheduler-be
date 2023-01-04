@@ -4,10 +4,11 @@ import jwt from 'jsonwebtoken';
 import env from '../../configs/env';
 import UserService from '../../services/UserService';
 import { UserDTO, UserModel } from '../../models/user';
+import { validators } from '../../middlewares/validator';
 
 const router = Router();
 
-router.post('/login', async (req, res) => {
+router.post('/login', ...validators.user_login, async (req, res) => {
 	passport.authenticate('local', (error, user, info) => {
 		if (error || !user) {
 		  return res.status(400).retJson(0, false, {reason: info.message});
@@ -30,7 +31,7 @@ router.post('/login', async (req, res) => {
 	})(req, res);
 })
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', ...validators.user_signup, async (req, res) => {
 	let user: UserModel = await UserService.signup(req.body as UserDTO);
 	if (!user) 
 		return res.status(400).retJson(0, false, {reason: "Server internal error"});
