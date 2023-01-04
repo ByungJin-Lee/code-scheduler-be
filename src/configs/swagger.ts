@@ -20,11 +20,11 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3000/swagger-apis",
+        url: "http://localhost:3000",
       },
     ],
   },
-  apis: ["../controllers/**/*.ts"],
+  apis: ["./src/controllers/**/*.ts"],
 };
 
 export const specs = swaggerJsdoc(options);
