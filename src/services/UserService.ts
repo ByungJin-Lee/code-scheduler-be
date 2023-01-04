@@ -1,3 +1,4 @@
+import passport from "passport";
 import UserModel from "../models/user";
 
 /**
@@ -8,14 +9,14 @@ export default class UserService {
 	/**
 	 * 로그인이 유효한지 확인합니다.
 	 */
-	static async login(id: string, pw: string): Promise<UserModel|null> {
-		return await UserModel.findOne({where: {id: id, password: pw}});
+	static async isValid(email: string, pw: string): Promise<UserModel|null> {
+		return await UserModel.findOne({where: {email: email, password: pw}});
 	}
 	
 	/**
 	 * 사용자 정보를 가져옵니다.
 	 */
-	static async getInfo(id: string) {
-		return await UserModel.findByPk(id);
+	static async getInfo(email: string) {
+		return await UserModel.findByPk(email);
 	}
 }

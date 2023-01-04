@@ -18,7 +18,7 @@ interface AppConfiguration {
 }
 
 interface DBConfiguration {
-  username: string;
+  db_username: string;
   password: string;
   database: string;
   host: string;
