@@ -1,5 +1,5 @@
 import passport from "passport";
-import UserModel from "../models/user";
+import { UserDTO, UserModel } from "../models/user";
 
 /**
  * 유저와 관련된 서비스를 처리하는 클래스.
@@ -18,5 +18,12 @@ export default class UserService {
 	 */
 	static async getInfo(email: string) {
 		return await UserModel.findByPk(email);
+	}
+
+	/**
+	 * 회원가입합니다.
+	 */
+	static async signup(user: UserDTO) {
+
 	}
 }

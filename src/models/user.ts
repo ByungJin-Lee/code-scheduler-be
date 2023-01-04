@@ -31,10 +31,10 @@ UserModel.init({
   }
 )
 
-export interface UserDTO {
-	email: String,
-	password: String,
+interface UserDTO {
+	email: string,
+	password?: string,
 	createdAt: Date
 }
 
-export default {UserModel};
+export { UserModel, UserDTO };
