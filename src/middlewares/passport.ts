@@ -33,7 +33,7 @@ passport.use('jwt', new passportJwt.Strategy(
 	},
 	async (jwtPayload, done) => {
 	  try {
-			let user = await UserService.getInfo(jwtPayload.email);
+			let user = await UserService.get(jwtPayload.email);
 			if (!user) {
 				return done(null, false, {
 					message: "Invalid JWT!"
@@ -52,7 +52,7 @@ passport.serializeUser((id, done) => {
 })
 
 passport.deserializeUser(async (id, done) => {
-  let user = await UserService.getInfo(id as string);
+  let user = await UserService.get(id as string);
 
   if (user)
     done(null, user);
