@@ -34,7 +34,7 @@ UserModel.init({
 interface UserDTO {
 	email: string,
 	password?: string,
-	createdAt: Date
+	createdAt?: Date
 }
 
 export { UserModel, UserDTO };
