@@ -32,10 +32,10 @@ router.post('/login', ...validators.user_login, async (req, res) => {
 })
 
 router.post('/signup', ...validators.user_signup, async (req, res) => {
-	let user: UserModel = await UserService.signup(req.body as UserDTO);
-	if (!user) 
-		return res.status(400).retJson(0, false, {reason: "Server internal error"});
-	return res.status(200).retJson(0, true);
+	if (await UserService.signup(req.body as UserDTO))
+		return res.status(200).retJson(0, true);
+	else
+		return res.status(400).retJson(0, false, {reason: "user already exists"});
 })
 
 export default router;

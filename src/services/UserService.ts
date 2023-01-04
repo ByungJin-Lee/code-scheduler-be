@@ -35,7 +35,7 @@ export default class UserService {
 
 	/**
 	 * 회원가입합니다.
-	 * @returns 생성된 UserModel
+	 * @returns 성공 여부
 	 */
 	static async signup(user: UserDTO): Promise<boolean> {
 			if (await UserService.exists(user.email)) {
