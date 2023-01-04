@@ -31,4 +31,4 @@ UserModel.init({
   }
 )
 
-export default { UserModel };
+export default UserModel;
