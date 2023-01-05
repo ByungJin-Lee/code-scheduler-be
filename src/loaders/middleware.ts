@@ -5,20 +5,24 @@ import express from "express";
 import expressSession from "express-session";
 import env from "../configs/env";
 import swaggerUi from "swagger-ui-express";
+import cors from "cors";
 import { specs } from "../configs/swagger";
 
 export default async function loadMiddleware(app: Application) {
   app.use(express.json());
   app.use(express.urlencoded());
+  app.use(cors());
 
   app.use(preprocessJson);
-  app.use(expressSession({
-    secret: env.JWT_SECRET_KEY,
-    resave: true,
-    saveUninitialized:true
-  }));
+  app.use(
+    expressSession({
+      secret: env.JWT_SECRET_KEY,
+      resave: true,
+      saveUninitialized: true,
+    })
+  );
 
   app.use(passport.initialize());
 
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 }
