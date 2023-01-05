@@ -15,10 +15,11 @@ declare global {
 interface AppConfiguration {
   ROOT_DIR: string;
   PORT: number;
+  JWT_SECRET_KEY: string;
 }
 
 interface DBConfiguration {
-  username: string;
+  db_username: string;
   password: string;
   database: string;
   host: string;

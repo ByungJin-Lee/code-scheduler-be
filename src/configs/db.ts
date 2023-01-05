@@ -1,7 +1,7 @@
 import { DBConfiguration } from "../types/environment";
 
 export default {
-  username: process.env.username || "null",
+  db_username: process.env.db_username || "null",
   password: process.env.password || "null",
   host: process.env.host || "null",
   database: process.env.database || "null",

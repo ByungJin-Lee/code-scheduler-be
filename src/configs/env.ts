@@ -17,4 +17,5 @@ switch (process.env.NODE_ENV) {
 export default {
   ROOT_DIR,
   PORT: Number(process.env.PORT) || 8080,
+  JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || "null"
 } as AppConfiguration;
