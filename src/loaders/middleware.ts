@@ -2,8 +2,6 @@ import { Application } from "express";
 import passport from "passport";
 import preprocessJson from "../middlewares/preprocessJson";
 import express from "express";
-import expressSession from "express-session";
-import env from "../configs/env";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import { specs } from "../configs/swagger";
