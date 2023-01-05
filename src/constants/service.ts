@@ -1,3 +1,5 @@
-export default {
-	0: "login"
-}
+export const Service = {
+  ANY: "any",
+  AUTH: "auth",
+  VALID: "valid",
+};
