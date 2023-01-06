@@ -4,9 +4,12 @@ import jwt from "jsonwebtoken";
 import env from "../../configs/env";
 import UserService from "../../services/UserService";
 import { UserDTO, UserModel } from "../../models/user";
-import { validators } from "../../middlewares/validator";
+import validator from "../../middlewares/validator";
 import { Service } from "../../constants/service";
 import check from "./check";
+import { signup } from "./signup";
+import { login } from "./login";
+import { refresh } from "./refresh";
 
 const router = Router();
 
@@ -27,52 +30,7 @@ const router = Router();
  *          type: string
  *          description: hello
  */
-
-/**
- * @swagger
- *  /auth/login:
- *    post:
- *      tags:
- *      - auth
- *      description: 로그인합니다.
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Auth'
- *      responses:
- *       200:
- *        description: 로그인 성공
- *       400:
- *        description: 로그인 실패
- */
-router.post("/login", ...validators.user_login, async (req, res) => {
-  passport.authenticate("local", (error, user, info) => {
-    if (error || !user) {
-      return res
-        .status(400)
-        .retJson(Service.AUTH, false, { reason: info.message });
-    }
-
-    req.login(user, { session: false }, (error) => {
-      if (error) {
-        console.error(error);
-        return res
-          .status(400)
-          .retJson(Service.AUTH, false, { reason: info.message });
-      }
-    });
-
-    const token: any = jwt.sign(
-      { email: user.email },
-      env.JWT_SECRET_KEY as jwt.Secret,
-      { expiresIn: "10m" }
-    );
-
-    return res.status(200).retJson(Service.AUTH, true, { token });
-  })(req, res);
-});
+router.post("/login", validator.user_login, login);
 
 /**
  * @swagger
@@ -93,14 +51,9 @@ router.post("/login", ...validators.user_login, async (req, res) => {
  *       400:
  *        description: 로그인 실패
  */
-router.post("/signup", ...validators.user_signup, async (req, res) => {
-  if (await UserService.signup(req.body as UserDTO))
-    return res.status(200).retJson(Service.AUTH, true);
-  else
-    return res
-      .status(400)
-      .retJson(Service.AUTH, false, { reason: "user already exists" });
-});
+router.post("/signup", validator.user_signup, signup);
+
+router.post("/refresh", validator.user_refresh, refresh);
 
 router.use(check);
 
