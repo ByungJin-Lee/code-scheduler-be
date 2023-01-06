@@ -16,7 +16,7 @@ export function ValidateErrorHandler(
   next();
 }
 
-export const validators = {
+const validator = {
   user_signup: [
     body("email").isEmail(),
     body("password").exists(),
@@ -27,4 +27,7 @@ export const validators = {
     body("password").exists(),
     ValidateErrorHandler,
   ],
+  user_refresh: [ValidateErrorHandler],
 };
+
+export default validator;

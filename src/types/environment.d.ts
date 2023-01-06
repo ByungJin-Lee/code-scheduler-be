@@ -16,6 +16,7 @@ interface AppConfiguration {
   ROOT_DIR: string;
   PORT: number;
   JWT_SECRET_KEY: string;
+  JWT_REFRESH_SECRET_KEY: string;
 }
 
 interface DBConfiguration {
