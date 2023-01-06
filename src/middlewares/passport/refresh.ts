@@ -3,17 +3,18 @@ import {
   ExtractJwt,
   Strategy,
   StrategyOptions,
-  VerifyCallback,
+  VerifyCallbackWithRequest,
 } from "passport-jwt";
 import env from "../../configs/env";
 import UserService from "../../services/UserService";
 
 const options: StrategyOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJwt.fromHeader("authorization"),
   secretOrKey: env.JWT_SECRET_KEY,
 };
 
-const verify: VerifyCallback = async (jwtPayload: { email: string }, done) => {
+const verify: VerifyCallbackWithRequest = async (jwtPayload, done) => {
+  console.log("hello");
   try {
     let user = await UserService.get(jwtPayload.email);
     if (!user) {
@@ -27,6 +28,6 @@ const verify: VerifyCallback = async (jwtPayload: { email: string }, done) => {
   }
 };
 
-const JwtStrategy = new Strategy(options, verify);
-
-export default JwtStrategy;
+export default function setUpJwt(passport: PassportStatic) {
+  passport.use("jwt", new Strategy(options, verify));
+}

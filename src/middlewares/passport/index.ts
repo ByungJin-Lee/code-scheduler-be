@@ -1,7 +1,8 @@
-import setUpLocal from "./local";
-import setUpJwt from "./jwt";
+import LocalStrategy from "./local";
+import JwtStrategy from "./jwt";
+import passport from "passport";
 
-export default function applyPassportStrategy() {
-  setUpLocal();
-  setUpJwt();
-}
+passport.use("local", LocalStrategy);
+passport.use("jwt", JwtStrategy);
+
+export default passport;

@@ -1,4 +1,4 @@
-import passport from "passport";
+import { PassportStatic } from "passport";
 import {
   IStrategyOptionsWithRequest,
   Strategy,
@@ -32,6 +32,6 @@ const verify: VerifyFunctionWithRequest = async (
   }
 };
 
-export default function setUpLocal() {
-  passport.use("local", new Strategy(options, verify));
-}
+const LocalStrategy = new Strategy(options, verify);
+
+export default LocalStrategy;
