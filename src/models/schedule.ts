@@ -6,7 +6,7 @@ class ScheduleModel extends Model {}
 
 const attributes: sequelize.ModelAttributes = {
 	id: {
-		type: DataTypes.NUMBER,
+		type: DataTypes.INTEGER,
 		primaryKey: true,
 		unique: true,
 		autoIncrement: true
