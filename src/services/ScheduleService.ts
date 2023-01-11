@@ -4,7 +4,6 @@ import { ScheduleMapper } from "../utils/modelMapper";
 import fs from "fs/promises"
 import path from "path"
 import env from "../configs/env";
-import cp from "child_process";
 
 export default class ScheduleService {
 
@@ -15,7 +14,7 @@ export default class ScheduleService {
 		return ScheduleMapper.getDto(schedule);
 	}
 
-	static async create(meta: ScheduleDTO, content: string) {
+	static async create(meta: ScheduleDTO, content: string): Promise<number | null> {
 		let schedule: ScheduleModel = await ScheduleModel.create({
 			name: meta.name,
 			description: meta.description,
@@ -24,8 +23,11 @@ export default class ScheduleService {
 			active: meta.active
 		});
 
-		let absPath: string = this.getPath(ScheduleMapper.getDto(schedule).id!);
+		let id = ScheduleMapper.getDto(schedule).id!;
+		let absPath: string = this.getPath(id);
 		fs.writeFile(absPath, content);
+
+		return id;
 	}
 
 	static getPath(scheduleId: number) {
