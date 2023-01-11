@@ -11,8 +11,4 @@ router.get("/", (req, res) => {
 
 router.use("/auth", auth);
 
-router.get("/test", (req, res) => {
-  ScheduleService.test();
-})
-
 export default router;
