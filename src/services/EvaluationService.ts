@@ -1,4 +1,5 @@
 import cp from "child_process";
+import pidusage from "pidusage";
 import { EvalResultDTO } from "../models/evalResult";
 import { ScheduleDTO, ScheduleModel } from "../models/schedule";
 import ScheduleService from "./ScheduleService";
@@ -24,9 +25,12 @@ export default class EvaluationService {
 			executedAt: -1,
 			runningTime: -1
 		}
+
 		const child: cp.ChildProcess = cp.exec(`node ${absPath}}`, (error, stdout, stderr) => {
-			
+			result.stdout = stdout;
+			result.stderr = stderr;
 		})
+		
 
 		return null; // impl
 	}
