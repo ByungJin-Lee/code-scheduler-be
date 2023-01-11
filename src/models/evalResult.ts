@@ -59,6 +59,17 @@ EvalResultModel.belongsTo(ScheduleModel, {
 	onUpdate: "cascade"
 })
 
+interface EvalResultDBVO {
+	id: number,
+	sid: number,
+	stdout: string,		// json array
+	stderr: string,		// json array
+	cpuUsage: number,
+	memoryUsage: number,
+	executedAt: number,
+	runningTime: number
+}
+
 interface EvalResultDTO {
 	id: number,
 	sid: number,
@@ -66,10 +77,8 @@ interface EvalResultDTO {
 	stderr: string[],
 	cpuUsage: number,
 	memoryUsage: number,
-	// unit: unix epoch in ms
 	executedAt: number,
-	// unit: ms
 	runningTime: number
 }
 
-export { EvalResultModel, EvalResultDTO }
+export { EvalResultModel, EvalResultDBVO, EvalResultDTO }
