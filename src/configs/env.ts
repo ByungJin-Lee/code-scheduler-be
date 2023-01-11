@@ -19,4 +19,5 @@ export default {
   PORT: Number(process.env.PORT) || 8080,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY || "null",
   JWT_REFRESH_SECRET_KEY: process.env.JWT_REFRESH_SECRET_KEY || "null",
+  CODE_DIR: process.env.CODE_DIR || "null"
 } as AppConfiguration;
