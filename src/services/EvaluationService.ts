@@ -30,8 +30,13 @@ export default class EvaluationService {
 			result.stdout = stdout;
 			result.stderr = stderr;
 		})
+		pidusage(child.pid!, (err: Error | null, stat) => {
+			result.cpuUsage = stat.cpu,
+			result.memoryUsage = stat.memory,
+			result.executedAt = stat.timestamp,
+			result.runningTime = stat.elapsed
+		})
 		
-
-		return null; // impl
+		return result;
 	}
 }
