@@ -1,8 +1,10 @@
 import { ScheduleDTO, ScheduleModel } from "../models/schedule";
 import { EvalResultDTO, EvalResultModel } from "../models/evalResult";
 import { ScheduleMapper } from "../utils/modelMapper";
-import fs from "fs"
+import fs from "fs/promises"
 import path from "path"
+import env from "../configs/env";
+import { exec } from "child_process";
 
 export default class ScheduleService {
 
@@ -13,7 +15,21 @@ export default class ScheduleService {
 		return ScheduleMapper.getDto(schedule);
 	}
 
-	static async create(meta: ScheduleDTO, code: string) {
-		fs.writeFile(path.join(process.env.CODE_DIR))
+	static async create(meta: ScheduleDTO, content: string) {
+		let schedule: ScheduleModel = await ScheduleModel.create({
+			name: meta.name,
+			description: meta.description,
+			period: meta.period,
+			next: meta.next,
+			active: meta.active
+		});
+
+		let id: number = ScheduleMapper.getDto(schedule).id!;
+		let filePath: string = path.join(env.ROOT_DIR, env.CODE_DIR, `${id}`, ".js")
+
+		fs.writeFile(filePath, content)
+			.then(() => {
+				exec("node ")
+			})
 	}
 }

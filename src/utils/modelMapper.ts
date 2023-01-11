@@ -1,5 +1,5 @@
 import {Model} from "sequelize";
-import { EvalResultDBVO, EvalResultDTO, EvalResultModel } from "../models/evalResult";
+import { EvalResultDTO, EvalResultModel } from "../models/evalResult";
 import { ScheduleDTO, ScheduleModel } from "../models/schedule";
 import { UserDTO, UserModel } from "../models/user";
 
@@ -26,16 +26,6 @@ export class ScheduleMapper extends ModelMapper {
 
 export class EvalResultMapper extends ModelMapper {
 	public static getDto(model: EvalResultModel): EvalResultDTO {
-		let dbvo = model.get({plain: true}) as EvalResultDBVO;
-		return {
-			id: dbvo.id,
-			sid: dbvo.sid,
-			stdout: JSON.parse(dbvo.stdout) as string[],
-			stderr: JSON.parse(dbvo.stderr) as string[],
-			cpuUsage: dbvo.cpuUsage,
-			memoryUsage: dbvo.memoryUsage,
-			executedAt: dbvo.executedAt,
-			runningTime: dbvo.runningTime
-		} as EvalResultDTO
+		return super._getDto<EvalResultModel, EvalResultDTO>(model);
 	}
 }
