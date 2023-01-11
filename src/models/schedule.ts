@@ -11,17 +11,25 @@ const attributes: sequelize.ModelAttributes = {
 		unique: true,
 		autoIncrement: true
 	},
-	code: {
-		type: DataTypes.TEXT,
+	name: {
+		type: DataTypes.STRING,
 		allowNull: false
 	},
-	period: {
-		type: DataTypes.NUMBER,
+	description: {
+		type: DataTypes.STRING,
 		allowNull: true
+	},
+	period: {
+		type: DataTypes.INTEGER,
+		allowNull: false
 	},
 	next: {
 		type: DataTypes.NUMBER,
-		allowNull: true
+		allowNull: false
+	},
+	active: {
+		type: DataTypes.BOOLEAN,
+		allowNull: false
 	}
 }
 
@@ -38,9 +46,11 @@ ScheduleModel.init(attributes, options)
 
 interface ScheduleDTO {
 	id: number,
-	code: string,
+	name: string,
+	description: string,
 	period?: number,
-	next?: number
+	next?: number,
+	active: boolean
 }
 
 export { ScheduleModel, ScheduleDTO }
