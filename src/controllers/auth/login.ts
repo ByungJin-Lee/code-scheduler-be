@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
-import { sign } from "jsonwebtoken";
-import env from "../../configs/env";
 import { Service } from "../../constants/service";
 import passport from "../../middlewares/passport";
+import { issueJwtToken } from "../../utils/authHelper";
+
 /**
  * @swagger
  *  /auth/login:
@@ -39,18 +39,6 @@ export const login: RequestHandler = async (req, res) => {
       }
     });
 
-    const payloadJwt = {
-      email: user.email,
-    };
-
-    const token: string = sign(payloadJwt, env.JWT_SECRET_KEY, {
-      expiresIn: "10m",
-    });
-
-    const refresh: string = sign(payloadJwt, env.JWT_REFRESH_SECRET_KEY, {
-      expiresIn: "30d",
-    });
-
-    return res.status(200).retJson(Service.AUTH, true, { token, refresh });
+    return issueJwtToken(res, user["email"]);
   })(req, res);
 };
