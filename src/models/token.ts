@@ -1,7 +1,13 @@
+import sequelize from "sequelize";
 import { DataTypes, Model } from "sequelize";
 import db from "./index";
 
-class TokenModel extends Model {}
+interface IToken {
+  email: string;
+  token: string;
+}
+
+class TokenModel extends Model<IToken> {}
 
 TokenModel.init(
   {
@@ -13,12 +19,12 @@ TokenModel.init(
     },
     token: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
     sequelize: db.sequelize,
-    modelName: "token",
+    modelName: "memberToken",
     // 자동으로 createdAt, editedAt 필드를 생성하지 않음
     timestamps: false,
     // 자동으로 필드명 끝에 's'를 붙이지 않음

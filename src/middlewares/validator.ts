@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { body, param, query, validationResult } from "express-validator";
+import { body, cookie, validationResult } from "express-validator";
 import { Service } from "../constants/service";
+import passport from "./passport";
 
 export function ValidateErrorHandler(
   req: Request,
@@ -27,7 +28,8 @@ const validator = {
     body("password").exists(),
     ValidateErrorHandler,
   ],
-  user_refresh: [ValidateErrorHandler],
+  user_refresh: [cookie("refreshToken").exists(), ValidateErrorHandler],
+  authorization: [passport.authenticate("jwt")],
 };
 
 export default validator;

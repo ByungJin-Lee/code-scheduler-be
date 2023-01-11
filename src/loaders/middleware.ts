@@ -4,12 +4,22 @@ import preprocessJson from "../middlewares/preprocessJson";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { specs } from "../configs/swagger";
 
 export default async function loadMiddleware(app: Application) {
   app.use(express.json());
   app.use(express.urlencoded());
-  app.use(cors());
+  app.use(cookieParser());
+  app.use((req, res, next) => {
+    console.log(req.cookies);
+    next();
+  });
+  app.use(
+    cors({
+      origin: true,
+    })
+  );
 
   app.use(preprocessJson);
 
