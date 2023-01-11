@@ -4,7 +4,7 @@ import { ScheduleMapper } from "../utils/modelMapper";
 import fs from "fs/promises"
 import path from "path"
 import env from "../configs/env";
-import { exec } from "child_process";
+import cp from "child_process";
 
 export default class ScheduleService {
 
@@ -24,12 +24,11 @@ export default class ScheduleService {
 			active: meta.active
 		});
 
-		let id: number = ScheduleMapper.getDto(schedule).id!;
-		let filePath: string = path.join(env.ROOT_DIR, env.CODE_DIR, `${id}`, ".js")
+		let absPath: string = this.getPath(ScheduleMapper.getDto(schedule).id!);
+		fs.writeFile(absPath, content);
+	}
 
-		fs.writeFile(filePath, content)
-			.then(() => {
-				exec("node ")
-			})
+	static getPath(scheduleId: number) {
+		return path.join(env.ROOT_DIR, env.CODE_DIR, `${scheduleId}`, ".js")
 	}
 }

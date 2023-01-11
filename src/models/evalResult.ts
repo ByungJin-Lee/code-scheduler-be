@@ -60,7 +60,7 @@ EvalResultModel.belongsTo(ScheduleModel, {
 })
 
 interface EvalResultDTO {
-	id: number,
+	id?: number,
 	sid: number,
 	stdout: string,
 	stderr: string,
