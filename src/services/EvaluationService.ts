@@ -16,14 +16,13 @@ export default class EvaluationService {
 		const absPath: string = ScheduleService.getPath(scheduleId);
 
 		let result: EvalResultDTO = {
-			id: 0,
 			sid: scheduleId,
 			stdout: "",
 			stderr: "",
-			cpuUsage: 0,
-			memoryUsage: 0,
-			executedAt: 0,
-			runningTime: 0
+			cpuUsage: -1,
+			memoryUsage: -1,
+			executedAt: -1,
+			runningTime: -1
 		}
 		const child: cp.ChildProcess = cp.exec(`node ${absPath}}`, (error, stdout, stderr) => {
 			
