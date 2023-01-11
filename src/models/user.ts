@@ -1,7 +1,6 @@
 import sequelize from "sequelize";
 import { DataTypes, Model } from "sequelize";
 import db from "./index";
-import { ScheduleModel } from "./schedule";
 
 class UserModel extends Model {}
 
@@ -31,10 +30,6 @@ const options: sequelize.InitOptions = {
 	// 자동으로 필드명 끝에 's'를 붙이지 않음
 	freezeTableName: true
 }
-
-UserModel.hasMany(ScheduleModel, {
-	foreignKey: "owner"
-})
 
 UserModel.init(attributes, options)
 

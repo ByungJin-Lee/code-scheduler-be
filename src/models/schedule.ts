@@ -1,6 +1,7 @@
 import sequelize from "sequelize";
 import { DataTypes, Model } from "sequelize";
 import db from "./index";
+import { UserModel } from "./user";
 
 class ScheduleModel extends Model {}
 
@@ -24,7 +25,7 @@ const attributes: sequelize.ModelAttributes = {
 		allowNull: false
 	},
 	next: {
-		type: DataTypes.NUMBER,
+		type: DataTypes.INTEGER,
 		allowNull: false
 	},
 	active: {
@@ -43,6 +44,12 @@ const options: sequelize.InitOptions = {
 }
 
 ScheduleModel.init(attributes, options)
+
+ScheduleModel.belongsTo(UserModel, {
+	foreignKey: "owner",
+	onDelete: "cascade",
+	onUpdate: "cascade"
+})
 
 interface ScheduleDTO {
 	id: number,

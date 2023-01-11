@@ -51,11 +51,13 @@ const options: sequelize.InitOptions = {
 	freezeTableName: true
 }
 
-EvalResultModel.belongsTo(ScheduleModel, {
-	foreignKey: "schedule"
-})
-
 EvalResultModel.init(attributes, options)
+
+EvalResultModel.belongsTo(ScheduleModel, {
+	foreignKey: "result_of",
+	onDelete: "cascade",
+	onUpdate: "cascade"
+})
 
 interface EvalResultDTO {
 	id: number,
