@@ -52,7 +52,7 @@ ScheduleModel.belongsTo(UserModel, {
 })
 
 interface ScheduleDTO {
-	id: number,
+	id?: number,
 	name: string,
 	description: string,
 	period?: number,
