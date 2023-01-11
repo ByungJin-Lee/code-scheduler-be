@@ -31,6 +31,7 @@ export default class EvaluationService {
 			result.stderr = stderr;
 		})
 		pidusage(child.pid!, (err: Error | null, stat) => {
+			console.log(stat);
 			result.cpuUsage = stat.cpu,
 			result.memoryUsage = stat.memory,
 			result.executedAt = stat.timestamp,

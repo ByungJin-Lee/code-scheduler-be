@@ -17,6 +17,7 @@ export default class ScheduleService {
 	static async create(meta: ScheduleDTO, content: string): Promise<number | null> {
 		let schedule: ScheduleModel = await ScheduleModel.create({
 			name: meta.name,
+			owner: null,	// todo
 			description: meta.description,
 			period: meta.period,
 			next: meta.next,
@@ -31,6 +32,6 @@ export default class ScheduleService {
 	}
 
 	static getPath(scheduleId: number) {
-		return path.join(env.ROOT_DIR, env.CODE_DIR, `${scheduleId}`, ".js")
+		return path.join(env.ROOT_DIR, env.CODE_DIR, `${scheduleId}.js`)
 	}
 }
