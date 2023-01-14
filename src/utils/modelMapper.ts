@@ -26,6 +26,15 @@ export class ScheduleMapper extends ModelMapper {
 
 export class EvalResultMapper extends ModelMapper {
 	public static getDto(model: EvalResultModel): EvalResultDTO {
-		return super._getDto<EvalResultModel, EvalResultDTO>(model);
+		return {
+			id: model.dataValues.id,
+			sid: model.dataValues.sid,
+			stdout: JSON.parse(model.dataValues.stdout),
+			stderr: JSON.parse(model.dataValues.stderr),
+			cpuUsage: model.dataValues.cpuUsage,
+			memoryUsage: model.dataValues.memoryUsage,
+			executedAt: model.dataValues.executedAt,
+			runningTime: model.dataValues.runningTime
+		} as EvalResultDTO;
 	}
 }

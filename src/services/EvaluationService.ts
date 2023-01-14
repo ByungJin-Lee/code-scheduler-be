@@ -17,8 +17,8 @@ export default class EvaluationService {
 
 		let result: EvalResultDTO = {
 			sid: scheduleId,
-			stdout: "",
-			stderr: "",
+			stdout: [],
+			stderr: [],
 			cpuUsage: -1,
 			memoryUsage: -1,
 			executedAt: -1,
@@ -28,13 +28,13 @@ export default class EvaluationService {
 		return new Promise((resolve, reject) => {
 			const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [absPath]);
 			child.stdout.on("data", (data) => {
-				result.stdout += data.toString();
+				result.stdout.push(data.toString());
 			})
 			child.stderr.on("data", (data) => {
-				result.stderr += data.toString();
+				result.stderr.push(data.toString());
 			})
 			child.on("exit", (code) => {
-				if (code == 0)
+				if (code === 0)	// 정상 종료
 					resolve(result);
 				else
 					reject(code);
