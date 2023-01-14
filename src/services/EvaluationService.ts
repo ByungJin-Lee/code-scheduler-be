@@ -25,30 +25,27 @@ export default class EvaluationService {
 			executedAt: -1,
 			runningTime: -1
 		}
-
-		const child: cp.ChildProcess = cp.exec(`node ${absPath}`, (error, stdout, stderr) => {
-			result.stdout = stdout;
-			result.stderr = stderr;
-		})
-		// let child: cp.ChildProcessWithoutNullStreams;
-		// child = cp.spawn("chcp", [`65001>null && node ${absPath}`]);
-		// child.stdout.on("data", (data) => {
-		// 	result.stdout.concat(data + "\n");
-		// })
-		// child.stderr.on("data", (data) => {
-		// 	result.stderr.concat(data + "\n");
-		// })
-
-		console.log("res:")
-		console.log(result);
-
-		// pidusage(child.pid!, (err: Error | null, stat: Status) => {
-		// 	result.cpuUsage = stat.cpu,
-		// 	result.memoryUsage = stat.memory,
-		// 	result.executedAt = stat.timestamp,
-		// 	result.runningTime = stat.elapsed
-		// })
-
-		return result;
+		
+		return new Promise((resolve, reject) => {
+			const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [absPath]);
+			// pidusage(child.pid!, (err: Error | null, stat: Status) => {
+			// 	result.cpuUsage = stat.cpu,
+			// 	result.memoryUsage = stat.memory,
+			// 	result.executedAt = stat.timestamp,
+			// 	result.runningTime = stat.elapsed
+			// })
+			child.stdout.on("data", (data) => {
+				result.stdout += data.toString();
+			})
+			child.stderr.on("data", (data) => {
+				result.stderr += data.toString();
+			})
+			child.on("exit", (code) => {
+				if (code == 0)
+					resolve(result);
+				else
+					reject(code);
+			})
+		});
 	}
 }
