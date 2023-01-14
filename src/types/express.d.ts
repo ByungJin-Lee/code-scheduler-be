@@ -5,7 +5,7 @@ declare global {
       cookies: CookiesProps | null;
     }
     export interface Response {
-      retJson(service: string, ok: boolean, data?: any): void;
+      retJson(service: string, ok: any, data?: any): void;
     }
   }
 }
