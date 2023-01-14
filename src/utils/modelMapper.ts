@@ -30,15 +30,15 @@ export class ScheduleMapper extends ModelMapper {
 		return super._getDto<ScheduleModel, ScheduleDTO>(model);
 	}
 
-	public static async createModel(dto: ScheduleDTO): Promise<ScheduleDTO> {
+	public static async createModel(dto: ScheduleDTO): Promise<ScheduleModel> {
 		return await ScheduleModel.create({
 			name: dto.name,
-			owner: null,
+			owner: dto.owner,
 			description: dto.description,
 			period: dto.period,
 			next: dto.next,
 			active: dto.active
-		});)
+		});
 	}
 }
 
@@ -52,7 +52,22 @@ export class EvalResultMapper extends ModelMapper {
 			cpuUsage: model.dataValues.cpuUsage,
 			memoryUsage: model.dataValues.memoryUsage,
 			executedAt: model.dataValues.executedAt,
-			runningTime: model.dataValues.runningTime
+			runningTime: model.dataValues.runningTime,
+			resultOf: model.dataValues.resultOf
 		} as EvalResultDTO;
+	}
+
+	public static async createModel(dto: EvalResultDTO): Promise<EvalResultModel> {
+		return await EvalResultModel.create({
+			id: dto.id,
+			sid: dto.sid,
+			stdout: dto.stdout.toString(),
+			stderr: dto.stderr.toString(),
+			cpuUsage: dto.cpuUsage,
+			memoryUsage: dto.memoryUsage,
+			executedAt: dto.executedAt,
+			runningTime: dto.runningTime,
+			resultOf: dto.resultOf
+		})
 	}
 }

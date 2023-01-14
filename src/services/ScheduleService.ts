@@ -16,14 +16,14 @@ export default class ScheduleService {
     meta: ScheduleDTO,
     content: string
   ): Promise<number | null> {
-    let schedule: ScheduleModel = await ScheduleModel.create({
+    let schedule: ScheduleModel = await ScheduleMapper.createModel({
       name: meta.name,
-      owner: null, // todo
+      // owner: null,
       description: meta.description,
       period: meta.period,
       next: meta.next,
       active: meta.active,
-    });
+    } as ScheduleDTO);
 
     let id = ScheduleMapper.getDto(schedule).id!;
     let absPath: string = this.getPath(id);
