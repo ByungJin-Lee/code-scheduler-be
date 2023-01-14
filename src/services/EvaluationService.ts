@@ -1,5 +1,5 @@
 import cp from "child_process";
-import pidusage from "pidusage";
+import pidusage, { Status } from "pidusage";
 import { EvalResultDTO } from "../models/evalResult";
 import { ScheduleDTO, ScheduleModel } from "../models/schedule";
 import ScheduleService from "./ScheduleService";
@@ -30,14 +30,25 @@ export default class EvaluationService {
 			result.stdout = stdout;
 			result.stderr = stderr;
 		})
-		pidusage(child.pid!, (err: Error | null, stat) => {
-			console.log(stat);
-			result.cpuUsage = stat.cpu,
-			result.memoryUsage = stat.memory,
-			result.executedAt = stat.timestamp,
-			result.runningTime = stat.elapsed
-		})
-		
+		// let child: cp.ChildProcessWithoutNullStreams;
+		// child = cp.spawn("chcp", [`65001>null && node ${absPath}`]);
+		// child.stdout.on("data", (data) => {
+		// 	result.stdout.concat(data + "\n");
+		// })
+		// child.stderr.on("data", (data) => {
+		// 	result.stderr.concat(data + "\n");
+		// })
+
+		console.log("res:")
+		console.log(result);
+
+		// pidusage(child.pid!, (err: Error | null, stat: Status) => {
+		// 	result.cpuUsage = stat.cpu,
+		// 	result.memoryUsage = stat.memory,
+		// 	result.executedAt = stat.timestamp,
+		// 	result.runningTime = stat.elapsed
+		// })
+
 		return result;
 	}
 }
