@@ -1,13 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { body, cookie, validationResult } from "express-validator";
+import { body, cookie, param, validationResult } from "express-validator";
 import { Service } from "../constants/service";
 import passport from "./passport";
 
-export function ValidateErrorHandler(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+function ValidateErrorHandler(req: Request, res: Response, next: NextFunction) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
@@ -17,19 +13,20 @@ export function ValidateErrorHandler(
   next();
 }
 
-const validator = {
-  user_signup: [
-    body("email").isEmail(),
-    body("password").exists(),
-    ValidateErrorHandler,
-  ],
-  user_login: [
-    body("email").isEmail(),
-    body("password").exists(),
-    ValidateErrorHandler,
-  ],
-  user_refresh: [cookie("refreshToken").exists(), ValidateErrorHandler],
-  authorization: [passport.authenticate("jwt")],
-};
-
-export default validator;
+export const user_signup = [
+  body("email").isEmail(),
+  body("password").exists(),
+  ValidateErrorHandler,
+];
+export const user_login = [
+  body("email").isEmail(),
+  body("password").exists(),
+  ValidateErrorHandler,
+];
+export const user_refresh = [
+  cookie("refreshToken").exists(),
+  ValidateErrorHandler,
+];
+export const authorization = [passport.authenticate("jwt")];
+export const evaluate_without = [body("code").exists(), ValidateErrorHandler];
+export const evaluate_with = [param("id").exists(), ValidateErrorHandler];

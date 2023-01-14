@@ -4,12 +4,16 @@ import jwt from "jsonwebtoken";
 import env from "../../configs/env";
 import UserService from "../../services/UserService";
 import { UserDTO, UserModel } from "../../models/user";
-import validator from "../../middlewares/validator";
 import { Service } from "../../constants/service";
 import check from "./check";
 import { signup } from "./signup";
 import { login } from "./login";
 import { refresh } from "./refresh";
+import {
+  user_login,
+  user_refresh,
+  user_signup,
+} from "../../middlewares/validator";
 
 const router = Router();
 
@@ -30,7 +34,7 @@ const router = Router();
  *          type: string
  *          description: hello
  */
-router.post("/login", validator.user_login, login);
+router.post("/login", user_login, login);
 
 /**
  * @swagger
@@ -51,9 +55,9 @@ router.post("/login", validator.user_login, login);
  *       400:
  *        description: 로그인 실패
  */
-router.post("/signup", validator.user_signup, signup);
+router.post("/signup", user_signup, signup);
 
-router.post("/refresh", validator.user_refresh, refresh);
+router.post("/refresh", user_refresh, refresh);
 
 router.use(check);
 
