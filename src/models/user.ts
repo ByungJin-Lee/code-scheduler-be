@@ -4,7 +4,7 @@ import db from "./index";
 
 class UserModel extends Model {}
 
-UserModel.init({
+const attributes: sequelize.ModelAttributes = {
 	email: {
 		type: DataTypes.STRING(255),
 		primaryKey: true,
@@ -20,16 +20,18 @@ UserModel.init({
 		allowNull: false,
 		defaultValue: sequelize.literal('now()')
 	}
-  },
-  {
-		sequelize: db.sequelize,
-		modelName: "member",
-		// 자동으로 createdAt, editedAt 필드를 생성하지 않음
-		timestamps: false,
-		// 자동으로 필드명 끝에 's'를 붙이지 않음
-		freezeTableName: true
-  }
-)
+}
+
+const options: sequelize.InitOptions = {
+	sequelize: db.sequelize,
+	modelName: "member",
+	// 자동으로 createdAt, editedAt 필드를 생성하지 않음
+	timestamps: false,
+	// 자동으로 필드명 끝에 's'를 붙이지 않음
+	freezeTableName: true
+}
+
+UserModel.init(attributes, options)
 
 interface UserDTO {
 	email: string,
