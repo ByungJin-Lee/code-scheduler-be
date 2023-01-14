@@ -2,6 +2,7 @@ import cp from "child_process";
 import { writeFileSync } from "fs";
 import { EvalResultDTO } from "../models/evalResult";
 import { ScheduleDTO } from "../models/schedule";
+import { EvalResultMapper } from "../utils/modelMapper";
 import ScheduleService from "./ScheduleService";
 
 /**
@@ -52,6 +53,7 @@ export default class EvaluationService {
 
     return new Promise((resolve, reject) => {
       let prevCpuUsage: NodeJS.CpuUsage = process.cpuUsage();
+      let prevTime: number = Date.now();
 
       const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [
         filePath,
@@ -65,9 +67,15 @@ export default class EvaluationService {
       child.on("exit", (code) => {
         result.cpuUsage = process.cpuUsage(prevCpuUsage).user;
         result.memoryUsage = process.memoryUsage().heapUsed;
-        if (code === 0)
+        result.executedAt = prevTime;
+        result.runningTime = Date.now() - prevTime;
+        if (code === 0) {
+          EvalResultMapper.createModel(result);
           resolve(result);
-        else reject(code);
+        }
+        else {
+          reject(code)
+        };
       });
     });
   }
