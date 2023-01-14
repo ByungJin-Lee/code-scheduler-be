@@ -18,7 +18,7 @@ export default class ScheduleService {
   ): Promise<number | null> {
     let schedule: ScheduleModel = await ScheduleMapper.createModel({
       name: meta.name,
-      owner: "null",
+      // owner: null,
       description: meta.description,
       period: meta.period,
       next: meta.next,

@@ -67,7 +67,7 @@ export default class EvaluationService {
       child.on("exit", (code) => {
         result.cpuUsage = process.cpuUsage(prevCpuUsage).user;
         result.memoryUsage = process.memoryUsage().heapUsed;
-        result.executedAt = prevTime;
+        result.executedAt = Math.trunc(prevTime / 1000);
         result.runningTime = Date.now() - prevTime;
         if (code === 0) {
           EvalResultMapper.createModel(result);
