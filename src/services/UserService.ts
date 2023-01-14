@@ -1,4 +1,5 @@
 import { UserDTO, UserModel } from "../models/user";
+import { UserMapper } from "../utils/modelMapper";
 
 /**
  * 유저와 관련된 서비스를 처리하는 클래스.
@@ -39,10 +40,7 @@ export default class UserService {
       return false;
     }
 
-    let userModel: UserModel = await UserModel.create({
-      email: user.email,
-      password: user.password,
-    });
+    let userModel: UserModel = await UserMapper.createModel(user);
 
     return userModel ? true : false;
   }
