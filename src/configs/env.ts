@@ -7,6 +7,7 @@ const ROOT_DIR = process.cwd();
 
 switch (process.env.NODE_ENV) {
   case "production":
+    console.log(path.join(ROOT_DIR, ENV_PRODUCTION_NAME));
     config({ path: path.join(ROOT_DIR, ENV_PRODUCTION_NAME) });
     break;
   case "development":
