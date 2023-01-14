@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { body, cookie, param, validationResult } from "express-validator";
+import { REFRESH_TOKEN_NAME } from "../constants/cookie";
 import { Service } from "../constants/service";
 import passport from "./passport";
 
@@ -24,9 +25,9 @@ export const user_login = [
   ValidateErrorHandler,
 ];
 export const user_refresh = [
-  cookie("refreshToken").exists(),
+  cookie(REFRESH_TOKEN_NAME).exists(),
   ValidateErrorHandler,
 ];
-export const authorization = [passport.authenticate("jwt")];
+export const authorization = [passport.authenticate("jwt", { session: false })];
 export const evaluate_without = [body("code").exists(), ValidateErrorHandler];
 export const evaluate_with = [param("id").exists(), ValidateErrorHandler];

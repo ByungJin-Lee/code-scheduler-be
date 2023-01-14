@@ -1,11 +1,4 @@
 import { Router } from "express";
-import passport from "passport";
-import jwt from "jsonwebtoken";
-import env from "../../configs/env";
-import UserService from "../../services/UserService";
-import { UserDTO, UserModel } from "../../models/user";
-import { Service } from "../../constants/service";
-import check from "./check";
 import { signup } from "./signup";
 import { login } from "./login";
 import { refresh } from "./refresh";
@@ -14,6 +7,7 @@ import {
   user_refresh,
   user_signup,
 } from "../../middlewares/validator";
+import { logout } from "./logout";
 
 const router = Router();
 
@@ -59,6 +53,6 @@ router.post("/signup", user_signup, signup);
 
 router.post("/refresh", user_refresh, refresh);
 
-router.use(check);
+router.get("/logout", logout);
 
 export default router;
