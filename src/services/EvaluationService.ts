@@ -8,6 +8,11 @@ import ScheduleService from "./ScheduleService";
  * 코드 평가와 관련된 서비스
  */
 export default class EvaluationService {
+  /**
+   * 스케줄을 평가합니다.
+   * @param scheduleId 스케줄 ID
+   * @returns 평가 결과, ID가 invalid라면 null.
+   */
   static async evaluate(scheduleId: number): Promise<EvalResultDTO | null> {
     let schedule: ScheduleDTO | null = await ScheduleService.getSchedule(
       scheduleId
@@ -15,45 +20,26 @@ export default class EvaluationService {
     if (!schedule) return null;
 
     const absPath: string = ScheduleService.getPath(scheduleId);
-
-    let result: EvalResultDTO = {
-      sid: scheduleId,
-      stdout: [],
-      stderr: [],
-      cpuUsage: -1,
-      memoryUsage: -1,
-      executedAt: -1,
-      runningTime: -1,
-    };
-
-    return new Promise((resolve, reject) => {
-      let prevCpuUsage: NodeJS.CpuUsage = process.cpuUsage();
-
-      const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [
-        absPath,
-      ]);
-      child.stdout.on("data", (data) => {
-        result.stdout.push(data.toString());
-      });
-      child.stderr.on("data", (data) => {
-        result.stderr.push(data.toString());
-      });
-      child.on("exit", (code) => {
-        result.cpuUsage = process.cpuUsage(prevCpuUsage).user;
-        result.memoryUsage = process.memoryUsage().heapUsed;
-        if (code === 0)
-          // 정상 종료
-          resolve(result);
-        else reject(code);
-      });
-    });
+    return this.evaluateFile(absPath);
   }
 
-  static async evaluateRaw(code: string): Promise<EvalResultDTO | null> {
+  /**
+   * raw code를 평가합니다.
+   * @param scheduleId 스케줄 ID
+   * @returns 평가 결과
+   */
+  static async evaluateRaw(code: string): Promise<EvalResultDTO> {
     const absPath: string = ScheduleService.getTempPathForTest();
-
     writeFileSync(absPath, code);
+    return this.evaluateFile(absPath);
+  }
 
+  /**
+   * 주어진 경로의 파일을 열어 평가합니다.
+   * @param scheduleId 스케줄 ID
+   * @returns 평가 결과
+   */
+  static async evaluateFile(filePath: string): Promise<EvalResultDTO> {
     let result: EvalResultDTO = {
       sid: -1,
       stdout: [],
@@ -68,7 +54,7 @@ export default class EvaluationService {
       let prevCpuUsage: NodeJS.CpuUsage = process.cpuUsage();
 
       const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [
-        absPath,
+        filePath,
       ]);
       child.stdout.on("data", (data) => {
         result.stdout.push(data.toString());
@@ -80,7 +66,6 @@ export default class EvaluationService {
         result.cpuUsage = process.cpuUsage(prevCpuUsage).user;
         result.memoryUsage = process.memoryUsage().heapUsed;
         if (code === 0)
-          // 정상 종료
           resolve(result);
         else reject(code);
       });
