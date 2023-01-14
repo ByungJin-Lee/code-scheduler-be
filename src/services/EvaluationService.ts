@@ -32,7 +32,7 @@ export default class EvaluationService {
   static async evaluateRaw(code: string): Promise<EvalResultDTO> {
     const absPath: string = ScheduleService.getTempPathForTest();
     writeFileSync(absPath, code);
-    return this.evaluateFile(absPath, null);
+    return this.evaluateFile(absPath);
   }
 
   /**
@@ -40,7 +40,7 @@ export default class EvaluationService {
    * @param scheduleId 스케줄 ID
    * @returns 평가 결과
    */
-  static async evaluateFile(filePath: string, from: number | undefined): Promise<EvalResultDTO> {
+  static async evaluateFile(filePath: string, from: number|undefined=undefined): Promise<EvalResultDTO> {
     let result: EvalResultDTO = {
       sid: -1,
       stdout: [],
