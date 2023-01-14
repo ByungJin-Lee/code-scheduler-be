@@ -16,11 +16,29 @@ export class UserMapper extends ModelMapper {
 	public static getDto(model: UserModel): UserDTO {
 		return super._getDto<UserModel, UserDTO>(model);
 	}
+
+	public static async createModel(dto: UserDTO): Promise<UserModel> {
+		return await UserModel.create({
+      email: dto.email,
+      password: dto.password,
+    });	
+	}
 }
 
 export class ScheduleMapper extends ModelMapper {
 	public static getDto(model: ScheduleModel): ScheduleDTO {
 		return super._getDto<ScheduleModel, ScheduleDTO>(model);
+	}
+
+	public static async createModel(dto: ScheduleDTO): Promise<ScheduleDTO> {
+		return await ScheduleModel.create({
+			name: dto.name,
+			owner: null,
+			description: dto.description,
+			period: dto.period,
+			next: dto.next,
+			active: dto.active
+		});)
 	}
 }
 
