@@ -52,7 +52,8 @@ export class EvalResultMapper extends ModelMapper {
 			cpuUsage: model.dataValues.cpuUsage,
 			memoryUsage: model.dataValues.memoryUsage,
 			executedAt: model.dataValues.executedAt,
-			runningTime: model.dataValues.runningTime
+			runningTime: model.dataValues.runningTime,
+			resultOf: model.dataValues.resultOf
 		} as EvalResultDTO;
 	}
 
@@ -65,7 +66,8 @@ export class EvalResultMapper extends ModelMapper {
 			cpuUsage: dto.cpuUsage,
 			memoryUsage: dto.memoryUsage,
 			executedAt: dto.executedAt,
-			runningTime: dto.runningTime
+			runningTime: dto.runningTime,
+			resultOf: dto.resultOf
 		})
 	}
 }

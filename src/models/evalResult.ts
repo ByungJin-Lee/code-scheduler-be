@@ -68,6 +68,7 @@ interface EvalResultDBVO {
 	memoryUsage: number,
 	executedAt: number,
 	runningTime: number
+	resultOf?: number
 }
 
 interface EvalResultDTO {
@@ -78,7 +79,8 @@ interface EvalResultDTO {
 	cpuUsage: number,
 	memoryUsage: number,
 	executedAt: number,
-	runningTime: number
+	runningTime: number,
+	resultOf?: number
 }
 
 export { EvalResultModel, EvalResultDBVO, EvalResultDTO }
