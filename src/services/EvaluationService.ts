@@ -26,7 +26,7 @@ export default class EvaluationService {
 			runningTime: -1
 		}
 
-		const child: cp.ChildProcess = cp.exec(`node ${absPath}}`, (error, stdout, stderr) => {
+		const child: cp.ChildProcess = cp.exec(`node ${absPath}`, (error, stdout, stderr) => {
 			result.stdout = stdout;
 			result.stderr = stderr;
 		})
