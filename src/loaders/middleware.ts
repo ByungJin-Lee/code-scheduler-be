@@ -11,10 +11,6 @@ export default async function loadMiddleware(app: Application) {
   app.use(express.json());
   app.use(express.urlencoded());
   app.use(cookieParser());
-  app.use((req, res, next) => {
-    console.log(req.cookies);
-    next();
-  });
   app.use(
     cors({
       origin: true,

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { Service } from "../constants/service";
 import auth from "./auth";
 import test from "./test";
+import schedule from "./schedule";
 
 const router = Router();
 
@@ -31,5 +32,6 @@ router.get("/a", (req, res) => {
 
 router.use("/auth", auth);
 router.use("/test", test);
+router.use("/schedule", schedule);
 
 export default router;
