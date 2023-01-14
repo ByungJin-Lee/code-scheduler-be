@@ -26,6 +26,8 @@ export default class EvaluationService {
 		}
 		
 		return new Promise((resolve, reject) => {
+			let prevCpuUsage: NodeJS.CpuUsage = process.cpuUsage();
+
 			const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [absPath]);
 			child.stdout.on("data", (data) => {
 				result.stdout.push(data.toString());
@@ -34,6 +36,8 @@ export default class EvaluationService {
 				result.stderr.push(data.toString());
 			})
 			child.on("exit", (code) => {
+				result.cpuUsage = process.cpuUsage(prevCpuUsage).user;
+				result.memoryUsage = process.memoryUsage().heapUsed;
 				if (code === 0)	// 정상 종료
 					resolve(result);
 				else
