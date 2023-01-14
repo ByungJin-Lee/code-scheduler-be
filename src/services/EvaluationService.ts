@@ -1,5 +1,4 @@
 import cp from "child_process";
-import pidusage, { Status } from "pidusage";
 import { EvalResultDTO } from "../models/evalResult";
 import { ScheduleDTO, ScheduleModel } from "../models/schedule";
 import ScheduleService from "./ScheduleService";
@@ -28,12 +27,6 @@ export default class EvaluationService {
 		
 		return new Promise((resolve, reject) => {
 			const child: cp.ChildProcessWithoutNullStreams = cp.spawn("node", [absPath]);
-			// pidusage(child.pid!, (err: Error | null, stat: Status) => {
-			// 	result.cpuUsage = stat.cpu,
-			// 	result.memoryUsage = stat.memory,
-			// 	result.executedAt = stat.timestamp,
-			// 	result.runningTime = stat.elapsed
-			// })
 			child.stdout.on("data", (data) => {
 				result.stdout += data.toString();
 			})
