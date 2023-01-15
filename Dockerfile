@@ -28,7 +28,9 @@ FROM node AS final
 RUN mkdir -p /app/dist                  
 
 # Use /app as CWD
-WORKDIR /app                            
+WORKDIR /app          
+
+RUN mkdir -p res/code/                  
 
 # Copy package.json and package-lock.json
 COPY package*.json ./                   
