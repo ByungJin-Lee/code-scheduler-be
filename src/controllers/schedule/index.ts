@@ -1,10 +1,17 @@
 import { Router } from "express";
-import { evaluate_with, evaluate_without } from "../../middlewares/validator";
-import { evaluateWithout } from "./evaluateWithout";
+import { param_id } from "../../middlewares/validator";
+import { create } from "./create";
+
+import { read, readWith } from "./read";
+import { remove } from "./remove";
+import { update } from "./update";
 
 const router = Router();
 
-router.post("/evaluate", evaluate_without, evaluateWithout);
-router.post("/evaluate/:id", evaluate_with, evaluateWithout);
+router.get("/", read);
+router.get("/:id", param_id, readWith);
+router.post("/", create);
+router.put("/", update);
+router.delete("/:id", param_id, remove);
 
 export default router;

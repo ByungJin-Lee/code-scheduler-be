@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { Service } from "../constants/service";
+import { authorization } from "../middlewares/validator";
 import auth from "./auth";
-import test from "./test";
+import evaluate from "./evaluate";
 import schedule from "./schedule";
 
 const router = Router();
@@ -31,7 +32,9 @@ router.get("/a", (req, res) => {
 });
 
 router.use("/auth", auth);
-router.use("/test", test);
-router.use("/schedule", schedule);
+router.use("/evaluate", evaluate);
+
+// Auth 필요
+router.use("/schedule", authorization, schedule);
 
 export default router;
