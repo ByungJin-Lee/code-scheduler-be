@@ -6,6 +6,7 @@ import {
   VerifyCallback,
 } from "passport-jwt";
 import env from "../../configs/env";
+import { UserDTO } from "../../models/user";
 import UserService from "../../services/UserService";
 
 const options: StrategyOptions = {
@@ -21,7 +22,7 @@ const verify: VerifyCallback = async (jwtPayload: { email: string }, done) => {
         message: "Invalid JWT!",
       });
     }
-    return done(null, user);
+    return done(null, user.dataValues);
   } catch (error) {
     console.error(error);
   }

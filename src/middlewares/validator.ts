@@ -31,3 +31,5 @@ export const user_refresh = [
 export const authorization = [passport.authenticate("jwt", { session: false })];
 export const evaluate_without = [body("code").exists(), ValidateErrorHandler];
 export const evaluate_with = [param("id").exists(), ValidateErrorHandler];
+export const param_id = [param("id").exists(), ValidateErrorHandler];
+export const schedule_create = [body("code").exists(), ValidateErrorHandler];

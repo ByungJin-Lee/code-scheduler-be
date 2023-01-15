@@ -1,6 +1,6 @@
 import cp from "child_process";
 import { writeFileSync } from "fs";
-import { EvalResultDTO } from "../models/evalResult";
+import { EvalResultDTO, EvalResultModel } from "../models/evalResult";
 import { ScheduleDTO } from "../models/schedule";
 import { EvalResultMapper } from "../utils/modelMapper";
 import ScheduleService from "./ScheduleService";
@@ -40,16 +40,19 @@ export default class EvaluationService {
    * @param scheduleId 스케줄 ID
    * @returns 평가 결과
    */
-  static async evaluateFile(filePath: string, from: number|undefined=undefined): Promise<EvalResultDTO> {
+  static async evaluateFile(
+    filePath: string,
+    from: number | undefined = undefined
+  ): Promise<EvalResultDTO> {
     let result: EvalResultDTO = {
-      sid: -1,
       stdout: [],
       stderr: [],
       cpuUsage: -1,
       memoryUsage: -1,
       executedAt: -1,
       runningTime: -1,
-      resultOf: from
+      exitCode: -1,
+      sid: from ? from : -1,
     };
 
     return new Promise((resolve, reject) => {
@@ -70,14 +73,25 @@ export default class EvaluationService {
         result.memoryUsage = process.memoryUsage().heapUsed;
         result.executedAt = Math.trunc(prevTime / 1000);
         result.runningTime = Date.now() - prevTime;
-        if (code === 0) {
-          EvalResultMapper.createModel(result);
-          resolve(result);
-        }
-        else {
-          reject(code)
-        };
+        if (code) result.exitCode = code;
+        if (from) EvalResultMapper.createModel(result);
+        resolve(result);
       });
     });
+  }
+
+  static async getEvalResultByScheduleId(sid: number) {
+    return await EvalResultModel.findAll({
+      where: {
+        sid: sid,
+      },
+    });
+  }
+
+  static async getEvalResultById(id: number) {
+    return await EvalResultModel.findByPk(id);
+  }
+  static async remove(id: number) {
+    return await EvalResultModel.destroy({ where: { id: id } });
   }
 }
