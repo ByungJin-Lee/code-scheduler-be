@@ -3,4 +3,5 @@ export const Service = {
   AUTH: "auth",
   VALID: "valid",
   EVAL: "evaluate",
+  SCHEDULE: "schedule",
 };
