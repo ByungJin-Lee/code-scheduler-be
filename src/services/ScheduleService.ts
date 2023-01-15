@@ -18,7 +18,7 @@ export default class ScheduleService {
   ): Promise<number | null> {
     let schedule: ScheduleModel = await ScheduleMapper.createModel({
       name: meta.name,
-      // owner: null,
+      owner: meta.owner,
       description: meta.description,
       period: meta.period,
       next: meta.next,
@@ -38,5 +38,30 @@ export default class ScheduleService {
 
   static getTempPathForTest() {
     return path.join(env.ROOT_DIR, env.CODE_DIR, `${v1()}.js`);
+  }
+
+  static async getByOwner(owner: string) {
+    return await ScheduleModel.findAll({
+      where: {
+        owner: owner,
+      },
+    });
+  }
+
+  static async getByOwnerAndId(owner: string, id: number) {
+    return await ScheduleModel.findOne({
+      where: {
+        owner: owner,
+        id: id,
+      },
+    });
+  }
+
+  static async removeById(id: number) {
+    return await ScheduleModel.destroy({ where: { id: id } });
+  }
+
+  static async updateById(id: number, dto: ScheduleDTO) {
+    return await ScheduleModel.update(dto, { where: { id: id } });
   }
 }
