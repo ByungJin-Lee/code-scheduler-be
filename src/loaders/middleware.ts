@@ -14,6 +14,7 @@ export default async function loadMiddleware(app: Application) {
   app.use(
     cors({
       origin: true,
+      credentials: true,
     })
   );
 
