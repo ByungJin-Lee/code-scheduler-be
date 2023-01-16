@@ -73,7 +73,8 @@ export default class EvaluationService {
         result.memoryUsage = process.memoryUsage().heapUsed;
         result.executedAt = Math.trunc(prevTime / 1000);
         result.runningTime = Date.now() - prevTime;
-        if (code) result.exitCode = code;
+
+        if (code != null) result.exitCode = code;
         if (from) EvalResultMapper.createModel(result);
         resolve(result);
       });
