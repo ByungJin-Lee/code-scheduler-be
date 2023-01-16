@@ -19,7 +19,11 @@ export const readWith: RequestHandler = async (req, res) => {
     Number(req.params.id)
   );
 
-  readFile(ScheduleService.getPath(Number(req.params.id)), (err, content) => {
-    return res.retJson(Service.SCHEDULE, err, { ...data, code: content });
-  });
+  readFile(
+    ScheduleService.getPath(Number(req.params.id)),
+    "utf8",
+    (err, content) => {
+      return res.retJson(Service.SCHEDULE, !err, { ...data, code: content });
+    }
+  );
 };
