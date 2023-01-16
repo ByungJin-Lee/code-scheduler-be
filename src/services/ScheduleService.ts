@@ -64,4 +64,23 @@ export default class ScheduleService {
   static async updateById(id: number, dto: ScheduleDTO) {
     return await ScheduleModel.update(dto, { where: { id: id } });
   }
+
+  /**
+   * 현재로부터 주어진 시간까지의 스케줄을 가져옴
+   * @param seconds 스케줄을 가져올 시간(초)
+   */
+  static async fetch(seconds: number): ScheduleModel[] {
+    let now: number = Math.trunc(Date.now() / 1000);
+    let schedules: ScheduleModel[] = await ScheduleModel.findAll({
+      where: {
+        active: true,
+        next: {
+          $not: null,
+          $gte: now,
+          $lt: now + seconds
+        }
+      }
+    });
+    return ScheduleMapper.getDtos(schedules);
+  }
 }

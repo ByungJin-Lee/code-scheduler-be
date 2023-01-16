@@ -17,6 +17,10 @@ export class UserMapper extends ModelMapper {
     return super._getDto<UserModel, UserDTO>(model);
   }
 
+  public static getDtos(models: UserModel[]): UserDTO[] {
+    return models.map(this.getDto);
+  }
+
   public static async createModel(dto: UserDTO): Promise<UserModel> {
     return await UserModel.create({
       email: dto.email,
@@ -28,6 +32,10 @@ export class UserMapper extends ModelMapper {
 export class ScheduleMapper extends ModelMapper {
   public static getDto(model: ScheduleModel): ScheduleDTO {
     return super._getDto<ScheduleModel, ScheduleDTO>(model);
+  }
+
+  public static getDtos(models: ScheduleModel[]): ScheduleDTO[] {
+    return models.map(this.getDto);
   }
 
   public static async createModel(dto: ScheduleDTO): Promise<ScheduleModel> {
@@ -55,6 +63,10 @@ export class EvalResultMapper extends ModelMapper {
       runningTime: model.dataValues.runningTime,
       exitCode: model.dataValues.exitCode,
     } as EvalResultDTO;
+  }
+
+  public static getDtos(models: EvalResultModel[]): EvalResultDTO[] {
+    return models.map(this.getDto);
   }
 
   public static async createModel(
