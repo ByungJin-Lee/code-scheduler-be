@@ -19,13 +19,7 @@ export const readWith: RequestHandler = async (req, res) => {
     Number(req.params.id)
   );
 
-  return res.retJson(Service.SCHEDULE, data, data);
-};
-
-export const readCode: RequestHandler = async (req, res) => {
-  if (!req.user) throw Error("No User");
-
-  readFile(ScheduleService.getPath(Number(req.params.id)), (err, data) => {
-    return res.retJson(Service.SCHEDULE, err, data);
+  readFile(ScheduleService.getPath(Number(req.params.id)), (err, content) => {
+    return res.retJson(Service.SCHEDULE, err, { ...data, code: content });
   });
 };
