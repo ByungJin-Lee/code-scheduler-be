@@ -4,8 +4,14 @@ import { v1 } from "uuid";
 import fs from "fs/promises";
 import path from "path";
 import env from "../configs/env";
+import EvaluationService from "./EvaluationService";
 
 export default class ScheduleService {
+  /** 스케줄 불러오는 시간 주기 */
+  static readonly FETCH_PERIOD: number = 50;
+  /** 스케줄 불러오는 시간 범위 (주기보다 커야함) */
+  static readonly FETCH_RANGE: number = 60;
+
   static async getSchedule(id: number): Promise<ScheduleDTO | null> {
     let schedule: ScheduleModel | null = await ScheduleModel.findByPk(id);
     if (!schedule) return null;
@@ -68,8 +74,9 @@ export default class ScheduleService {
   /**
    * 현재로부터 주어진 시간까지의 스케줄을 가져옴
    * @param seconds 스케줄을 가져올 시간(초)
+   * @returns 가져온 스케줄 DTO
    */
-  static async fetch(seconds: number): ScheduleModel[] {
+  static async fetchSchedules(seconds: number): Promise<ScheduleDTO[]> {
     let now: number = Math.trunc(Date.now() / 1000);
     let schedules: ScheduleModel[] = await ScheduleModel.findAll({
       where: {
@@ -82,5 +89,33 @@ export default class ScheduleService {
       }
     });
     return ScheduleMapper.getDtos(schedules);
+  }
+
+  /**
+   * 스케줄 DTO로부터 스케줄 실행을 예약합니다.
+   * @param scheduleDtos 예약할 스케줄 DTO
+   */
+  static reserve(scheduleDtos: ScheduleDTO[]): void {
+    let now = Math.trunc(Date.now() / 1000);
+
+    scheduleDtos.forEach((sch) => {
+      setTimeout(() => {
+        EvaluationService.evaluate(sch.id!);
+        if (!sch.active) return;
+        if (!sch.period) return;
+        sch.next = now + sch.period;
+        this.updateById(sch.id!, sch);
+      }, sch.next! - Date.now())
+    })
+  }
+
+  /**
+   * 스케줄링 서비스를 실행합니다.
+   */
+  static async run() {
+    console.log("scheduling started!");
+    setInterval(async () => {
+      this.reserve(await this.fetchSchedules(this.FETCH_RANGE));
+    }, this.FETCH_PERIOD);
   }
 }
