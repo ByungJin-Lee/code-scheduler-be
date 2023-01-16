@@ -14,10 +14,9 @@ export const read: RequestHandler = async (req, res) => {
 export const readWith: RequestHandler = async (req, res) => {
   if (!req.user) throw Error("No User");
 
-  const data = await ScheduleService.getByOwnerAndId(
-    req.user.email,
-    Number(req.params.id)
-  );
+  const data = (
+    await ScheduleService.getByOwnerAndId(req.user.email, Number(req.params.id))
+  )?.dataValues;
 
   readFile(
     ScheduleService.getPath(Number(req.params.id)),
