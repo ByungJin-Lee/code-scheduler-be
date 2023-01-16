@@ -5,12 +5,11 @@ import fs from "fs/promises";
 import path from "path";
 import env from "../configs/env";
 import EvaluationService from "./EvaluationService";
+import { Op }from "sequelize"
 
 export default class ScheduleService {
-  /** 스케줄 불러오는 시간 주기 (초) */
-  static readonly FETCH_PERIOD: number = 50;
-  /** 스케줄 불러오는 시간 범위 (초, 주기보다 커야함) */
-  static readonly FETCH_RANGE: number = 60;
+  /** 스케줄 불러오는 시간 간격 및 범위 (초) */
+  static readonly FETCH_RANGE: number = 50;
 
   static async getSchedule(id: number): Promise<ScheduleDTO | null> {
     let schedule: ScheduleModel | null = await ScheduleModel.findByPk(id);
@@ -80,11 +79,11 @@ export default class ScheduleService {
     let now: number = Math.trunc(Date.now() / 1000);
     let schedules: ScheduleModel[] = await ScheduleModel.findAll({
       where: {
-        active: true,
+        active: 1,
         next: {
-          $not: null,
-          $gte: now,
-          $lt: now + seconds
+          [Op.not]: null,
+          [Op.gte]: now,
+          [Op.lt]: now + seconds
         }
       }
     });
@@ -116,6 +115,6 @@ export default class ScheduleService {
     console.log("scheduling started!");
     setInterval(async () => {
       this.reserve(await this.fetchSchedules(this.FETCH_RANGE));
-    }, this.FETCH_PERIOD * 1000);
+    }, this.FETCH_RANGE * 1000);
   }
 }
