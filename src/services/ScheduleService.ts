@@ -7,9 +7,9 @@ import env from "../configs/env";
 import EvaluationService from "./EvaluationService";
 
 export default class ScheduleService {
-  /** 스케줄 불러오는 시간 주기 */
+  /** 스케줄 불러오는 시간 주기 (초) */
   static readonly FETCH_PERIOD: number = 50;
-  /** 스케줄 불러오는 시간 범위 (주기보다 커야함) */
+  /** 스케줄 불러오는 시간 범위 (초, 주기보다 커야함) */
   static readonly FETCH_RANGE: number = 60;
 
   static async getSchedule(id: number): Promise<ScheduleDTO | null> {
@@ -105,7 +105,7 @@ export default class ScheduleService {
         if (!sch.period) return;
         sch.next = now + sch.period;
         this.updateById(sch.id!, sch);
-      }, sch.next! - Date.now())
+      }, sch.next! - now)
     })
   }
 
@@ -116,6 +116,6 @@ export default class ScheduleService {
     console.log("scheduling started!");
     setInterval(async () => {
       this.reserve(await this.fetchSchedules(this.FETCH_RANGE));
-    }, this.FETCH_PERIOD);
+    }, this.FETCH_PERIOD * 1000);
   }
 }
